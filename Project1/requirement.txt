@@ -1,0 +1,12 @@
+gensim
+jieba
+matplotlib-inline==0.1.7
+matplotlib
+nltk
+numpy>=1.26.4
+pandas
+Pygments
+scikit-learn
+scipy
+textblob==0.18.0.post0
+tqdm==4.66.5
