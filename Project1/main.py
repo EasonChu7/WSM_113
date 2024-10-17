@@ -19,7 +19,7 @@ def main():
     eng_query = args.Eng_query
     ch_query = args.Chi_query
 
-    nltk.download('all')
+    #nltk.download('all')
     
     print(f"English Query: {eng_query}")
     print(f"Chinese Query: {ch_query}")
@@ -91,7 +91,7 @@ def main():
         custom_stopwords = set(f.read().splitlines())
     stopwords = STOPWORDS.union(custom_stopwords)
     relevant_docs = pd.read_csv('./smaller_dataset/rel.tsv', sep='\t', header=None)
-    documents = load_documents('./smaller_dataset/collections',stopwords=stopwords)
+    documents = load_documents_q4('./smaller_dataset/collections',stopwords=stopwords)
     queries = load_queries('./smaller_dataset/queries',stopwords=stopwords)
     vocab = build_vocabulary(documents)
     term_index = {term: idx for idx, term in enumerate(vocab)}
@@ -107,17 +107,25 @@ def main():
         tfidf_vectors[doc_id] = calculate_tfidf(tf_vector, idf_vector)
 
     results = []
-    
-    for query in tqdm(queries):
-        query_tf = calculate_tf(query, term_index=term_index)
-        query_tfidf = calculate_tfidf(query_tf, idf_vector)
-        similarities = cosine_similarity([query_tfidf], list(tfidf_vectors.values())).flatten()
-        results.append(np.argsort(similarities)[::-1][:10])
-    mrr_score = calculate_mrr(relevant_docs, results)
-    map_score = calculate_map(relevant_docs, results)
-    recall_score = calculate_recall(relevant_docs, results)
 
-    print(f'MRR@10: {mrr_score:.4f}, MAP@10: {map_score:.4f}, Recall@10: {recall_score:.4f}')
+    for query_id, query_tokens in tqdm(queries):  
+        query_tf = calculate_tf(query_tokens, term_index)  
+        query_tfidf = calculate_tfidf(query_tf, idf_vector)  
+        similarities = cosine_similarity([query_tfidf], list(tfidf_vectors.values())).flatten()
+
+        top_10_indices = np.argsort(similarities)[::-1][:10].astype(int)
+
+        top_10_doc_ids = [list(tfidf_vectors.keys())[idx] for idx in top_10_indices]
+
+        results.append((query_id, top_10_doc_ids))  
+
+    mrr_score, mrr_scores = calculate_mrr(relevant_docs, results)
+    map_at_10, recall_at_10, map_scores, recall_scores = calculate_map_and_recall(relevant_docs, results)
+
+    print(f"MRR@10: {mrr_score:.4f}")
+    print(f"MAP@10: {map_at_10:.4f}")
+    print(f"Recall@10: {recall_at_10:.4f}")
+    
     
     
         

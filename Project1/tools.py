@@ -20,27 +20,40 @@ def preprocess_cn(text,stopwords):
     processed_tokens = [token for token in tokens if token not in stopwords]
     
     return processed_tokens
-def load_documents(folder,stopwords):
+def load_documents(folder, stopwords):
     documents = {}
     for file in os.listdir(folder):
-        if file.endswith(".txt"):
+        if file.endswith(".txt") and file.startswith("News"):
+            doc_id = file.replace("News", "").replace(".txt", "")  # Extract the document ID
             with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
-                documents[file] = preprocess(f.read(),stopwords)
+                documents[doc_id] = preprocess(f.read(), stopwords)
     return documents
-    
-def load_documents_cn(folder,stopwords):
+
+def load_documents_cn(folder, stopwords):
     documents = {}
     for file in os.listdir(folder):
-        if file.endswith(".txt"):
+        if file.endswith(".txt") and file.startswith("News"):
+            doc_id = file.replace("News", "").replace(".txt", "")  # Extract the document ID
             with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
-                documents[file] = preprocess_cn(f.read(),stopwords)
+                documents[doc_id] = preprocess_cn(f.read(), stopwords)
     return documents
-def load_queries(folder,stopwords=None):
+
+def load_documents_q4(folder, stopwords):
+    documents = {}
+    for file in os.listdir(folder):
+        if file.endswith(".txt") and file.startswith("d"):
+            doc_id = file.replace("d", "").replace(".txt", "")  
+            with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
+                documents[doc_id] = preprocess(f.read(), stopwords)
+    return documents
+
+def load_queries(folder, stopwords=None):
     queries = []
     for file in os.listdir(folder):
-        if file.endswith(".txt"):
+        if file.endswith(".txt") and file.startswith("q"):
+            query_id = file.replace("q", "").replace(".txt", "")  
             with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
-                queries.append(preprocess(f.read(),stopwords=stopwords)) 
+                queries.append((query_id, preprocess(f.read(), stopwords=stopwords)))  
     return queries
 def load_stopwords(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
