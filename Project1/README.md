@@ -30,6 +30,8 @@ python main.py --Eng_query "Typhoon Taiwan war" --Chi_query "資安 遊戲"
 ```
 
 ### File Structure
+
+```
 ./ChineseNews
     Newsxxxx.txt
 ./EnglishNews
@@ -45,6 +47,7 @@ metrics.py -- 計算MRR、MAP、Recall at 10.
 tools.py -- Some useful functions.
 tfidfcalculation.py -- calculate the TF vector, IDF vector, TF-IDF vector. In TF weighting calculation, Maximum frequency normalization is employed refer to the course slide.
 ranks.py -- Functions to output the results.
+```
 
 ---
 If you got any issues when using, please don't hesitate to contact ```111701037@g.nccu.edu.tw```
