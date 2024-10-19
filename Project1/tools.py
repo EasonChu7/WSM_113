@@ -23,19 +23,17 @@ def preprocess_cn(text,stopwords):
 def load_documents(folder, stopwords):
     documents = {}
     for file in os.listdir(folder):
-        if file.endswith(".txt") and file.startswith("News"):
-            doc_id = file.replace("News", "").replace(".txt", "")  # Extract the document ID
+        if file.endswith(".txt"):
             with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
-                documents[doc_id] = preprocess(f.read(), stopwords)
+                documents[file] = preprocess(f.read(), stopwords=stopwords)
     return documents
 
 def load_documents_cn(folder, stopwords):
     documents = {}
     for file in os.listdir(folder):
-        if file.endswith(".txt") and file.startswith("News"):
-            doc_id = file.replace("News", "").replace(".txt", "")  # Extract the document ID
+        if file.endswith(".txt"):
             with open(os.path.join(folder, file), 'r', encoding='utf-8') as f:
-                documents[doc_id] = preprocess_cn(f.read(), stopwords)
+                documents[file] = preprocess_cn(f.read(),stopwords=stopwords)
     return documents
 
 def load_documents_q4(folder, stopwords):

@@ -1,5 +1,5 @@
 import numpy as np  
-from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances  
+from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import normalize
 from tools import *
 from tfidfcalculation import *

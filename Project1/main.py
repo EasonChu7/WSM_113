@@ -6,7 +6,7 @@ from ranks import *
 from tfidfcalculation import *
 from metrics import *
 from tqdm import tqdm
-
+import time
 def main():
     
     parser = argparse.ArgumentParser(description="Process English and Chinese queries.")
@@ -134,4 +134,8 @@ def main():
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
+    end_time = time.time()
+    cost = end_time - start_time
+    print(f'All execution cost {cost}s')
